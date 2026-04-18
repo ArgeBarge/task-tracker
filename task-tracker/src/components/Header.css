@@ -1,0 +1,43 @@
+.header {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 80px;
+    top: 0;
+    left: 0;
+    border-style: solid;
+    border-top: 0px;
+    border-left: 0px;
+    border-right: 0px;
+    border-bottom-width: 1px;
+    border-color: #DCDCDC;
+    background-color: white;
+    z-index: 9999;
+}
+
+.header-title {
+    margin-left: 10px;
+    width: fit-content;
+    height: fit-content;
+}
+
+.login-status-container {
+    margin-right: 20px;
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+}
+
+.login-status-image {
+    width: 25px;
+    height: 25px;
+    margin-right: 5px;
+}
+
+.header-logout-button {
+    margin-left: 5px;
+    border-radius: 15px;
+    background-color: white;
+    border-width: 1px;
+}

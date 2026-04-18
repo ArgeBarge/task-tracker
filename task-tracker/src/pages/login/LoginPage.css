@@ -1,0 +1,43 @@
+.login-page-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 85px;
+}
+
+.login-container {
+    display: flex;
+    width: 250px;
+    flex-direction: column;
+    background-color:#DCDCDC;
+    margin-top: 15px;
+    padding: 20px;
+    border-radius: 15px;
+    
+}
+
+.login-status {
+    overflow-wrap: break-word;
+    display: flex;
+    justify-content: center;
+}
+.login-username-container {
+    margin-bottom: 10px;
+}
+
+.login-password-container {
+    margin-bottom: 10px;
+}
+
+.login-password-input {
+    padding: 15px;
+}
+
+.login-input {
+    padding: 20px;
+    width: 82%
+}
+
+.login-button {
+    padding: 20px;
+}
