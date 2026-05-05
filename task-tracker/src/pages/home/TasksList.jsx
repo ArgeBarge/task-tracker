@@ -12,10 +12,14 @@ export function TasksList({ type, data, loadTaskData, newTasks }) {
     }
 
     useEffect(() => {
+        if(newTasks && newTasks.length === 0)
+            return
+
         divRef.current.scrollTo({
             top: divRef.current.scrollHeight,
             behavior: "smooth"
         });
+        console.log("new tasks: ", newTasks)
     }, [newTasks])
 
     return (
@@ -55,7 +59,8 @@ export function TasksList({ type, data, loadTaskData, newTasks }) {
             <div ref={divRef} className="task-list">
                 
                 {data.map((task) => {
-                    console.log(task.ASIGNEES)
+                    console.log("\nnot new tasks here\n")
+                    console.log(JSON.stringify(task.ASIGNEES) + "task assignees here")
                     return (
                         <Task 
                             key={task.taskId} 
@@ -72,12 +77,15 @@ export function TasksList({ type, data, loadTaskData, newTasks }) {
 
                 {
                     newTasks && newTasks.map((task) => {
+                        console.log("\nnew tasks here\n")
+                        console.log(JSON.stringify(task.ASIGNEES) + "task assignees here")
                         return (
                             <Task 
                                 key={task.taskId} 
                                 taskId={task.taskId} 
                                 name={task.taskName} 
                                 creator={task.creator_username} 
+                                assignees={task.ASIGNEES ?? null}
                                 expiryDate={task.expiryDate} 
                                 completed={task.completer_username}
                                 loadTaskData={loadTaskData}

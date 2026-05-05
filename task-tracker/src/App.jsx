@@ -15,6 +15,7 @@ function App() {
   const [newTasks, setNewTasks] = useState([])
 
   const loadTaskData = async () => {
+    try {
       let response;
 
       response = await axios.get("/api/tasks/all")
@@ -22,6 +23,10 @@ function App() {
       setExpiredTasks(response.data.expired_tasks)
       setCompletedTasks(response.data.completed_tasks)
       setNewTasks(response.data.new_tasks)
+    } catch(error) {
+      console.log(error)
+    }
+      
   }
 
   

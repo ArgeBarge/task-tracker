@@ -77,7 +77,7 @@ export async function insertTask(body) {
 export async function modifyTask(req) {
     const id = req.params.taskId
 
-    const updates = req.body;
+    const {assignees, ...updates} = req.body
 
     try {
         const keys = Object.keys(updates);
@@ -92,7 +92,19 @@ export async function modifyTask(req) {
         console.log(id)
         await pool.execute(sql, [...values, id])
         
+        console.log(assignees[0] + "assignees list")
+
+        if(assignees) {
+            await pool.execute(`DELETE FROM tasks_assignees WHERE taskId = ?`, [id])
+
+            const placeholders = assignees.map(() => "?").join(",")
+
+            const sql = `INSERT INTO tasks_assignees (taskId, asigneeId) \
+            SELECT ?, id FROM users WHERE username IN (${placeholders})`
+
+            await pool.execute(sql, [id, ...assignees])
+        }
     } catch (error) {
-        
+        console.log(error)
     }
 }

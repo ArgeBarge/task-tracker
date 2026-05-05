@@ -18,11 +18,11 @@ import { useState } from 'react'
 export function Task({ taskId, name, creator, expiryDate, completed, loadTaskData, defaultEdit, assignees }) {
 
     const [ toggleEdit, setToggleEdit ] = useState(defaultEdit ? true : false);
-    const [ timeInput, setTimeInput] = useState(expiryDate ? dayjs(expiryDate).format("HH:mm") : dayjs().format("HH:mm"));
-    const [ dateInput, setDateInput ] = useState(expiryDate ? dayjs(expiryDate).format("YYYY-MM-DD") : dayjs().format("YYYY-MM-DD"));
-    const [ titleInput, setTitleInput ] = useState(name ? name : "New Task")
+    const [ timeInput, setTimeInput] = useState(dayjs(expiryDate).format("HH:mm"));
+    const [ dateInput, setDateInput ] = useState(dayjs(expiryDate).format("YYYY-MM-DD"));
+    const [ titleInput, setTitleInput ] = useState(name)
     const [ completedToggle, setCompletedToggle ] = useState(completed ? true : false)
-    const [assigneeList, setAssigneeList] = useState(new Map())
+    const [assigneeList, setAssigneeList] = useState(defaultEdit ? new Map(assignees.map(a => [a, false])) : new Map())
 
     const { user } = useAuth();
 
@@ -46,16 +46,24 @@ export function Task({ taskId, name, creator, expiryDate, completed, loadTaskDat
             setCompletedToggle(false)
         }
         
-
         await loadTaskData();
     }
 
     const handleEditOnClick = async () => {
         if(toggleEdit)
         {
+            console.log("Assignees list before being sent to backend", assigneeList)
+            
+            let assigneeUpdate = []
+            for (const a of assigneeList)
+                if(a[1])
+                    assigneeUpdate.push(a[0])
+            console.log(assigneeUpdate + "updated before sending to backend")
+            
             await axios.patch(`/api/tasks/${taskId}`, {
                 "expiryDate": dateInput + " " + timeInput,
-                "taskName": titleInput
+                "taskName": titleInput,
+                "assignees": assigneeUpdate
             })
         } else {
             const possibleAssignees = await getPossibleAssignees();
@@ -99,12 +107,17 @@ export function Task({ taskId, name, creator, expiryDate, completed, loadTaskDat
         setTitleInput(event.target.value)
     }
 
-    function handleAddAsigneeOnClick(event) {
+    function handleAssigneeModify(event) {
+        const newMap = new Map(assigneeList);
+        console.log(event.currentTarget.value, "assignee modify value")
+        const oldValue = newMap.get(event.target.value)
+        newMap.set(event.currentTarget.value, !oldValue)
+        setAssigneeList(newMap)
 
     }
 
     const expiryDays = dayjs(expiryDate).diff(dayjs(), 'day')
-
+    
     return (
         <div className="task-container">
             <div className='task-name-container'>
@@ -151,7 +164,11 @@ export function Task({ taskId, name, creator, expiryDate, completed, loadTaskDat
                         })) : 
                             assigneeList.entries().map((buttonAssignee) => {
                                 return (
-                                    <button className="edit-assignee-button">
+                                    <button 
+                                        className="edit-assignee-button"
+                                        value={buttonAssignee[0]}
+                                        onClick={handleAssigneeModify}
+                                    >
                                         {buttonAssignee[0]}
                                         <img className="edit-assignee-image" src={buttonAssignee[1] ? closeImage : addImage}></img>
                                     </button>

@@ -1,7 +1,8 @@
 import { getTasks, getCompletedTasks, getExpiredTasks, getCurrentTasks, insertTask, modifyTask, deleteTask } from "../model/taskModel.js"
 import dayjs from 'dayjs'
+import { getAllUsers } from "../model/userModel.js";
 
-function formatTasksForResponse(tasks) {
+const formatTasksForResponse = async (tasks) => {
     let currentTasks = [];
     let completedTasks = [];
     let expiredTasks = [];
@@ -38,6 +39,20 @@ function formatTasksForResponse(tasks) {
         return dayjs(task_1.expiryDate).diff(task_2.expiryDate)
     })
 
+    const possibleAssignees = await getAllUsers();
+    possibleAssignees.map
+    newTasks.map((task) => {
+        task.taskName="New Task"
+        task.expiryDate=dayjs()
+
+        task.ASIGNEES = possibleAssignees.map((assignee) => {
+            return assignee.username
+        })
+
+        console.log(task.ASIGNEES)
+        
+    })
+
 
     console.log("current tasks" + currentTasks);
     console.log("expired tasks", + expiredTasks);
@@ -53,7 +68,7 @@ const getAllTasks = async (req, res) => {
         switch(req.params.type) {
             case "all":
                 tasks = await getTasks();
-                const [currentTasks, completedTasks, expiredTasks, newTasks] = formatTasksForResponse(tasks)
+                const [currentTasks, completedTasks, expiredTasks, newTasks] = await formatTasksForResponse(tasks)
                 res.status(200).json({
                     "current_tasks": currentTasks,
                     "expired_tasks": expiredTasks,
