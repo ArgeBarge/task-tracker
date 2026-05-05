@@ -55,7 +55,7 @@ export function TasksList({ type, data, loadTaskData, newTasks }) {
             <div ref={divRef} className="task-list">
                 
                 {data.map((task) => {
-                    console.log(task)
+                    console.log(task.ASIGNEES)
                     return (
                         <Task 
                             key={task.taskId} 

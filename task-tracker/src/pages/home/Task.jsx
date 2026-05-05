@@ -7,6 +7,9 @@ import deleteIcon from '../../assets/images/Trash_Full.png'
 import checkImage from '../../assets/images/Check.png'
 import circleImage from '../../assets/images/Circle.png'
 import usersImage from '../../assets/images/Users_Group.png'
+import closeImage from '../../assets/images/Close_LG.png'
+import addImage from '../../assets/images/Add_Plus.png'
+
 import axios from 'axios'
 import { useAuth } from '../../AuthContext'
 import { useState } from 'react'
@@ -19,14 +22,18 @@ export function Task({ taskId, name, creator, expiryDate, completed, loadTaskDat
     const [ dateInput, setDateInput ] = useState(expiryDate ? dayjs(expiryDate).format("YYYY-MM-DD") : dayjs().format("YYYY-MM-DD"));
     const [ titleInput, setTitleInput ] = useState(name ? name : "New Task")
     const [ completedToggle, setCompletedToggle ] = useState(completed ? true : false)
+    const [assigneeList, setAssigneeList] = useState(new Map())
 
     const { user } = useAuth();
+
+    const getPossibleAssignees = async () => {
+        const response = await axios.get("/api/users")
+        return response.data
+    }
     const handleOnComplete = async () => {
 
         if(!completedToggle)
         {
-            console.log(user)
-            console.log(taskId)
             await axios.patch(`/api/tasks/${Number(taskId)}`, {
                 "completedUserId": user.id
             })
@@ -44,18 +51,35 @@ export function Task({ taskId, name, creator, expiryDate, completed, loadTaskDat
     }
 
     const handleEditOnClick = async () => {
-        console.log("i ran")
         if(toggleEdit)
         {
             await axios.patch(`/api/tasks/${taskId}`, {
                 "expiryDate": dateInput + " " + timeInput,
                 "taskName": titleInput
             })
+        } else {
+            const possibleAssignees = await getPossibleAssignees();
+            let newMap = new Map(possibleAssignees.map((assignee) => {
+                return [assignee.username, false]
+            }))
+
+            console.log("assignees before going to function", assignees)
+            for(let i = 0; i < assignees.length; i++) {
+                if(assignees[i].name)
+                    newMap.set(assignees[i].name, true)
+            }
+
+            setAssigneeList(newMap);
+            for (const x of assigneeList) {
+                console.log(x + "\n")
+            }
+            console.log("finish assignee list")
         }
+
+        
 
         await loadTaskData();
         setToggleEdit(!toggleEdit)
-        console.log(dateInput)
     }
 
     const handleDeleteOnClick = async () => {
@@ -75,9 +99,12 @@ export function Task({ taskId, name, creator, expiryDate, completed, loadTaskDat
         setTitleInput(event.target.value)
     }
 
+    function handleAddAsigneeOnClick(event) {
+
+    }
+
     const expiryDays = dayjs(expiryDate).diff(dayjs(), 'day')
 
-    console.log("taskName " + name + " assignees " + assignees)
     return (
         <div className="task-container">
             <div className='task-name-container'>
@@ -116,13 +143,23 @@ export function Task({ taskId, name, creator, expiryDate, completed, loadTaskDat
                     <div className="task-assign-container">
                         <img className="task-assign-image" src={usersImage}>
                         </img>
-                        {assignees && assignees.map((asignee) => {
-                            console.log("hello" + asignee)
+                        {!toggleEdit ? (assignees && assignees.map((asignee) => {
                             return (
                                 asignee.id ? asignee.name + ", " : "None"
                             )
                             
-                        })}
+                        })) : 
+                            assigneeList.entries().map((buttonAssignee) => {
+                                return (
+                                    <button className="edit-assignee-button">
+                                        {buttonAssignee[0]}
+                                        <img className="edit-assignee-image" src={buttonAssignee[1] ? closeImage : addImage}></img>
+                                    </button>
+                                )
+                            })
+                        }
+                        
+                        
                     </div>
 
                     {completedToggle ?

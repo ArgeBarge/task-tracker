@@ -176,6 +176,10 @@
     overflow-wrap: break-word;
 }
 
+.edit-assignee-image {
+    width: 10px;
+}
+
 .task-user-container {
     display: flex;
     align-items: center;

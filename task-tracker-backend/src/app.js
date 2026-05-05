@@ -64,7 +64,6 @@ app.post('/api/auth', (req, res) => {
                     message: "login failed"
                 })
             }
-            console.log(user)
             return res.status(200).json({
                 message: "Authenticated",
                 userData: {

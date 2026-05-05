@@ -32,7 +32,6 @@ export function CreateTask({setToggleAddTask, loadTaskData}) {
 
     function handleAddAsignee() {
         setAsigneeList([...asigneeList, inputAsignee])
-        console.log(asigneeList)
     }
 
     function handleAsigneeInputChange(event) {
