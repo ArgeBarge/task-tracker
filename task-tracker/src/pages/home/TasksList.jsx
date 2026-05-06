@@ -70,6 +70,7 @@ export function TasksList({ type, data, loadTaskData, newTasks }) {
                             assignees={task.ASIGNEES ?? null} 
                             expiryDate={task.expiryDate} 
                             completed={task.completer_username}
+                            creation_date={task.creationDate}
                             loadTaskData={loadTaskData}
                         />
                     )

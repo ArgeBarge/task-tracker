@@ -17,7 +17,7 @@ const startServer = async () => {
         app.listen(process.env.PORT || 8000, () => {
             console.log(`Server is running n port : ${process.env.PORT}`);
             
-        })
+        },)
     } catch (error) {
         console.log("Mongo DB connection failed!", error)
     }

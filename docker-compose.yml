@@ -1,0 +1,33 @@
+version: "3.8"
+
+services:
+  backend:
+    build: ./task-tracker-backend
+    container_name: task-tracker-backend
+    ports:
+      - 5000:4000
+
+  frontend:
+    build: ./task-tracker
+    container_name: task-tracker
+    ports: 
+    - 8000:80
+    depends_on:
+      - backend
+  
+  db:
+    image: mysql
+    container_name: task-tracker-db
+    restart: always
+    environment: 
+      MYSQL_ROOT_PASSWORD: ${DB_PASS}
+      MYSQL_DATABASE: task_tracker
+    
+    volumes:
+      - task_tracker_data:/var/lib/mysql
+
+    ports:
+      - 3307:3306
+
+volumes:
+  task_tracker_data:

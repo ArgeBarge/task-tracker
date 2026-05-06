@@ -15,7 +15,7 @@ import { useAuth } from '../../AuthContext'
 import { useState } from 'react'
 
 
-export function Task({ taskId, name, creator, expiryDate, completed, loadTaskData, defaultEdit, assignees }) {
+export function Task({ taskId, name, creator, expiryDate, completed, loadTaskData, defaultEdit, assignees, creation_date }) {
 
     const [ toggleEdit, setToggleEdit ] = useState(defaultEdit ? true : false);
     const [ timeInput, setTimeInput] = useState(dayjs(expiryDate).format("HH:mm"));
@@ -205,7 +205,7 @@ export function Task({ taskId, name, creator, expiryDate, completed, loadTaskDat
                         <button className='edit-button' onClick={handleEditOnClick}>
                             <img className="edit-button-image" src={editPencil}>
                             </img>
-                            edit
+                            {!toggleEdit ? "edit" : "done"}
                         </button>
                     </div>
                     <div>
@@ -216,6 +216,8 @@ export function Task({ taskId, name, creator, expiryDate, completed, loadTaskDat
                         </button>
                     </div>
                 </div>
+
+                {/*aaaaa {creation_date}*/}
             </div>
             
             <button 

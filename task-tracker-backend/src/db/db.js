@@ -12,7 +12,8 @@ export const pool = mysql.createPool({
     database: "task_tracker",
     waitForConnections: true,
     connectionLimit: 10,
-    namedPlaceholders: true
+    namedPlaceholders: true,
+    port: 3306
 })
 
 export default pool;

@@ -270,3 +270,11 @@
     padding-top: 10px;
     border-radius: 20px;
 }
+
+.edit-assignee-button {
+    display: flex;
+    background-color: white;
+    border-width: 1px;
+    border-radius: 15px;
+    margin-right: 5px;
+}
