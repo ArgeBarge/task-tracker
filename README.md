@@ -1,6 +1,4 @@
-# Project Title
-
-Task Tracker
+# Task Tracker
 
 ## Description
 
