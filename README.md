@@ -7,17 +7,14 @@ A task tracker built in react with an express.js backend and a MySQL server
 ## Getting Started
 
 ### Dependencies
-
+Ensure docker is installed
 ### Installing
 
 * Clone the repository
-* Run ``` npm install ``` in ```./task-tracker```
-* Run ``` npm install ``` in ```./task-tracker-backend```
 
 ### Executing program
 
-* Run ``` mpn run start ``` in ``` ./task-tracker ```
-* Run ``` npm run start ``` in ``` ./task-tracker-backend ```
+* Run ``` docker compose up -d ``` in the root directory
 
 ## Help
 
