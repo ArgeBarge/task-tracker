@@ -14,6 +14,7 @@ Ensure docker and docker composed are installed
 
 ### Executing program
 
+* Setup .env file
 * Run ``` docker compose up -d ``` in the root directory
 
 ## Help
